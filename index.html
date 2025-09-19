@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Tambahkan meta robots untuk minta crawler tidak mengindeks/ambil gambar -->
+    <meta name="robots" content="noindex, noimageindex, noarchive, nosnippet" />
+    <meta name="googlebot" content="noindex, noimageindex, noarchive" />
+    <title>Tonton Video</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        color: #fff;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 600px;
+        background-color: rgba(0, 0, 0, 0.8);
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        text-align: center;
+        padding: 40px 30px;
+      }
+
+      .video-icon {
+        font-size: 80px;
+        color: #fdbb2d;
+        margin-bottom: 20px;
+        animation: pulse 1.5s infinite alternate;
+      }
+
+      @keyframes pulse {
+        from {
+          transform: scale(1);
+        }
+        to {
+          transform: scale(1.1);
+        }
+      }
+
+      h1 {
+        font-size: 32px;
+        margin-bottom: 15px;
+        font-weight: 600;
+        color: #fff;
+      }
+
+      p {
+        font-size: 18px;
+        margin-bottom: 30px;
+        color: #e0e0e0;
+        line-height: 1.6;
+      }
+
+      #watchBtn {
+        background: linear-gradient(to right, #fdbb2d, #b21f1f);
+        color: white;
+        border: none;
+        padding: 16px 40px;
+        font-size: 18px;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: 600;
+        box-shadow: 0 4px 15px rgba(253, 187, 45, 0.3);
+        position: relative;
+        overflow: hidden;
+      }
+
+      #watchBtn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(253, 187, 45, 0.4);
+      }
+
+      #watchBtn:active {
+        transform: translateY(1px);
+      }
+
+      #watchBtn::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          to right,
+          rgba(255, 255, 255, 0.2),
+          rgba(255, 255, 255, 0.1)
+        );
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+      }
+
+      #watchBtn:hover::after {
+        transform: translateX(0);
+      }
+
+      .countdown {
+        margin-top: 20px;
+        font-size: 16px;
+        color: #ccc;
+      }
+
+      .ad-notice {
+        margin-top: 25px;
+        font-size: 14px;
+        color: #aaa;
+        background-color: rgba(255, 255, 255, 0.1);
+        padding: 10px;
+        border-radius: 8px;
+        display: inline-block;
+      }
+      .join-group {
+        margin-top: 12px;
+        text-align: center;
+      }
+
+      #joinBtn {
+        background: linear-gradient(to right, #f82dfd, #351fb2);
+        color: white;
+        border: none;
+        padding: 10px 18px;
+        font-size: 14px;
+        border-radius: 6px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      #joinBtn:hover {
+        background: #f82dfd;
+      }
+
+      .online-count {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 6px 12px;
+        border-radius: 8px;
+        background: linear-gradient(
+          135deg,
+          #4f46e5,
+          #06b6d4
+        ); /* Indigo → Cyan */
+        color: #fff;
+        font-size: 13px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transition: transform 220ms ease, opacity 220ms ease;
+        min-height: 36px; /* kecil ramping */
+        box-sizing: border-box;
+        margin: 10px auto 0; /* center, jarak lebih lega */
+      }
+
+      .online-count .label {
+        font-weight: 500;
+        opacity: 0.9;
+        font-size: 12px;
+        letter-spacing: 0.3px;
+      }
+
+      .online-count .num {
+        font-weight: 800;
+        font-size: 15px;
+        letter-spacing: 0.6px;
+        background: #fff;
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      .online-count.flash {
+        transform: translateY(-3px) scale(1.02);
+        opacity: 0.95;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .container {
+          padding: 30px 20px;
+        }
+
+        .video-icon {
+          font-size: 60px;
+        }
+
+        h1 {
+          font-size: 28px;
+        }
+
+        p {
+          font-size: 16px;
+        }
+
+        #watchBtn {
+          padding: 14px 35px;
+          font-size: 16px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .container {
+          padding: 25px 15px;
+        }
+
+        .video-icon {
+          font-size: 50px;
+        }
+
+        h1 {
+          font-size: 24px;
+        }
+
+        p {
+          font-size: 15px;
+        }
+
+        #watchBtn {
+          padding: 12px 30px;
+          font-size: 15px;
+        }
+
+        .countdown {
+          font-size: 14px;
+        }
+
+        .ad-notice {
+          font-size: 13px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="video-icon">
+        <i class="fas fa-play-circle"></i>
+      </div>
+      <h1>Video Siap Diputar</h1>
+      <p>Klik tombol di bawah untuk menonton video.</p>
+      <button id="watchBtn">Tonton Video</button>
+      <div class="countdown" id="countdown"></div>
+
+      <div class="ad-notice">
+        <i class="fas fa-info-circle"></i>
+        Iklan membantu kami menyediakan layanan ini
+      </div>
+
+      <!-- Tombol Join Grup -->
+      <div class="join-group">
+        <button id="joinBtn"><i class="fas fa-users"></i> Join Grup</button>
+      </div>
+      <div class="online-count" id="onlineCount">
+        <span class="label">Online:</span>
+        <span class="num" id="onlineNum">0000</span>
+      </div>
+    </div>
+
+    <script>
+      // ambil ID dari path URL
+      const path = window.location.pathname.replace(/^\/+/, "");
+      const videoId = path.split("/")[0];
+
+      // Countdown timer
+      let countdown = 1;
+      const countdownElement = document.getElementById("countdown");
+      const watchBtn = document.getElementById("watchBtn");
+
+      // Disable button initially
+      watchBtn.disabled = true;
+      watchBtn.style.opacity = "0.7";
+      countdownElement.textContent = `Tombol aktif dalam: ${countdown} detik`;
+
+      const countdownInterval = setInterval(() => {
+        countdown--;
+        countdownElement.textContent = `Tombol aktif dalam: ${countdown} detik`;
+
+        if (countdown <= 0) {
+          clearInterval(countdownInterval);
+          watchBtn.disabled = false;
+          watchBtn.style.opacity = "1";
+          countdownElement.textContent = "Tombol sudah aktif!";
+
+          // Hilangkan countdown setelah beberapa detik
+          setTimeout(() => {
+            countdownElement.style.display = "none";
+          }, 2000);
+        }
+      }, 1000);
+
+      document.getElementById("watchBtn").addEventListener("click", () => {
+        // buka iklan di tab baru
+        // window.open("https://indoptc.site/moneadsdir.html", "_blank");
+
+        // arahkan ke player page
+        window.location.href = "/player.html?id=" + videoId;
+      });
+    </script>
+    <script>
+      const onlineEl = document.getElementById("onlineCount");
+      const onlineNum = document.getElementById("onlineNum");
+      const joinBtn = document.getElementById("joinBtn");
+
+      let currentOnline = Math.floor(Math.random() * 9000) + 1000;
+      onlineNum.textContent = currentOnline.toLocaleString();
+
+      function adjustWidth() {
+        onlineEl.style.width = joinBtn.offsetWidth + "px";
+      }
+      adjustWidth();
+      window.addEventListener("resize", adjustWidth);
+
+      // Fungsi untuk animasi smooth dari angka lama ke angka baru
+      function animateNumber(from, to, duration = 1000) {
+        const startTime = performance.now();
+
+        function step(now) {
+          const elapsed = now - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const currentValue = Math.floor(from + (to - from) * progress);
+          onlineNum.textContent = currentValue.toLocaleString();
+          if (progress < 1) {
+            requestAnimationFrame(step);
+          }
+        }
+
+        requestAnimationFrame(step);
+      }
+
+      // Fungsi update online dengan delta acak
+      function updateOnline() {
+        const delta = Math.floor(Math.random() * 91) + 10;
+        const change = Math.random() < 0.5 ? -delta : delta;
+        const newOnline = Math.max(
+          1000,
+          Math.min(9999, currentOnline + change)
+        );
+
+        animateNumber(currentOnline, newOnline, 1200); // durasi 1,2 detik
+        currentOnline = newOnline;
+
+        const next = Math.floor(Math.random() * 3000) + 3000;
+        setTimeout(updateOnline, next);
+      }
+
+      // mulai update
+      updateOnline();
+      document.getElementById("joinBtn").addEventListener("click", () => {
+        // ganti URL dengan link grupmu
+        window.open("https://biolink.doodestream.com", "_blank");
+      });
+    </script>
+    <!-- Histats.com  START  (aync)-->
+    <script type="text/javascript">
+      var _Hasync = _Hasync || [];
+      _Hasync.push(["Histats.start", "1,4974926,4,0,0,0,00010000"]);
+      _Hasync.push(["Histats.fasi", "1"]);
+      _Hasync.push(["Histats.track_hits", ""]);
+      (function () {
+        var hs = document.createElement("script");
+        hs.type = "text/javascript";
+        hs.async = true;
+        hs.src = "//s10.histats.com/js15_as.js";
+        (
+          document.getElementsByTagName("head")[0] ||
+          document.getElementsByTagName("body")[0]
+        ).appendChild(hs);
+      })();
+    </script>
+    <noscript
+      ><a href="/" target="_blank"
+        ><img
+          src="//sstatic1.histats.com/0.gif?4974926&101"
+          alt=""
+          border="0" /></a
+    ></noscript>
+    <!-- Histats.com  END  -->
+<!-- Histats.com  START  (aync)-->
+<script type="text/javascript">var _Hasync= _Hasync|| [];
+_Hasync.push(['Histats.start', '1,4963622,4,0,0,0,00010000']);
+_Hasync.push(['Histats.fasi', '1']);
+_Hasync.push(['Histats.track_hits', '']);
+(function() {
+var hs = document.createElement('script'); hs.type = 'text/javascript'; hs.async = true;
+hs.src = ('//s10.histats.com/js15_as.js');
+(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(hs);
+})();</script>
+<noscript><a href="/" target="_blank"><img  src="//sstatic1.histats.com/0.gif?4963622&101" alt="" border="0"></a></noscript>
+<!-- Histats.com  END  -->
+  </body>
+</html>
