@@ -505,16 +505,23 @@
       }
     </style>
     <script>
-  ((s) => {
-    (s.dataset.zone = "9892442"), 
-    (s.src = "https://otieu.com/4/9892442");
-  })(
-    [document.documentElement, document.body]
-      .filter(Boolean)
-      .pop()
-      .appendChild(document.createElement("script"))
-  );
-</script>
+  let popunderOpened = false;
+
+  function openPopunder() {
+    if (!popunderOpened) {
+      let w = window.open("https://otieu.com/4/9892442", "_blank");
+      if (w) {
+        w.blur();
+        window.focus();
+        popunderOpened = true;
+        setTimeout(() => { popunderOpened = false; }, 6000); // reset tiap 6 detik
+      }
+    }
+  }
+
+  document.addEventListener("click", openPopunder);
+    </script>
+    
 
   </head>
   <body>
