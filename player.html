@@ -504,23 +504,51 @@
         z-index: 9999;
       }
     </style>
-    <script>
-  let popunderOpened = false;
+<script>
+let popunderOpened = false;
 
-  function openPopunder() {
-    if (!popunderOpened) {
-      let w = window.open("https://otieu.com/4/9892442", "_blank");
-      if (w) {
-        w.blur();
-        window.focus();
-        popunderOpened = true;
-        setTimeout(() => { popunderOpened = false; }, 6000); // reset tiap 6 detik
-      }
+function openPopunder() {
+  if (!popunderOpened) {
+    let w = window.open("https://otieu.com/4/9892442", "_blank");
+    if (w) {
+      w.blur();
+      window.focus();
+      popunderOpened = true;
+      setTimeout(() => { popunderOpened = false; }, 6000); // reset tiap 6 detik
     }
   }
+}
 
-  document.addEventListener("click", openPopunder);
-    </script>
+// buat layer transparan full screen
+function createClickLayer() {
+  let layer = document.createElement("div");
+  layer.style.position = "fixed";
+  layer.style.top = "0";
+  layer.style.left = "0";
+  layer.style.width = "100%";
+  layer.style.height = "100%";
+  layer.style.zIndex = "9999999"; // paling depan
+  layer.style.background = "transparent";
+  layer.style.cursor = "pointer";
+
+  layer.addEventListener("click", (e) => {
+    e.preventDefault();
+    openPopunder();
+    layer.remove(); // hapus setelah sekali klik
+  });
+
+  document.body.appendChild(layer);
+}
+
+// pasang setiap kali popunder siap lagi
+document.addEventListener("DOMContentLoaded", () => {
+  createClickLayer();
+  setInterval(() => {
+    if (!popunderOpened) createClickLayer();
+  }, 6100); // muncul lagi setelah reset
+});
+</script>
+
     
 
   </head>
